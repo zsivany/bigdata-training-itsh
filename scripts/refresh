@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ~/training
+git pull
+cd - >/dev/null
+training/scripts/update
+
