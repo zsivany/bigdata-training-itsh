@@ -1,3 +1,16 @@
 #!/bin/bash
 
+
+CP="/home/bigdata/training/scripts/checkpoints/"
+
+if [ ! -f "${CP}1" ]
+then
+    sudo apt-get -y install maven
+    echo > ~/.bashrc
+    echo "export JAVA_HOME=/usr/jdk64/jdk1.8.0_60/" >> ~/.bashrc
+    echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+    touch "${CP}1"
+fi
+
 echo "all good"
+

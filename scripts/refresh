@@ -2,6 +2,6 @@
 
 cd ~/training
 git pull
-cd - >/dev/null
+cd ~
 training/scripts/update
 
