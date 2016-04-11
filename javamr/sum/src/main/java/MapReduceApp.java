@@ -9,7 +9,6 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 public class MapReduceApp {
 
@@ -20,10 +19,20 @@ public class MapReduceApp {
 
         public void map(Object key, Text value, Context context
         ) throws IOException, InterruptedException {
-            StringTokenizer itr = new StringTokenizer(value.toString());
-            while (itr.hasMoreTokens()) {
-                word.set(itr.nextToken());
-                context.write(word, new IntWritable(1));
+            try {
+                if (value.toString().equals("")){
+                    return;
+                }
+                String[] vals = value.toString().split(" ");
+                String name = vals[0];
+                int amount = Integer.parseInt(vals[1]);
+
+                word.set(name);
+                context.write(word, new IntWritable(amount));
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw e;
             }
         }
     }
@@ -35,12 +44,18 @@ public class MapReduceApp {
         public void reduce(Text key, Iterable<IntWritable> values,
                            Context context
         ) throws IOException, InterruptedException {
-            int sum = 0;
-            for (IntWritable val : values) {
-                sum += val.get();
+            try {
+                int sum = 0;
+                for (IntWritable val : values) {
+                    sum += val.get();
+                }
+                result.set(sum);
+                context.write(key, result);
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw e;
             }
-            result.set(sum);
-            context.write(key, result);
         }
     }
 
@@ -50,10 +65,12 @@ public class MapReduceApp {
         job.setJarByClass(MapReduceApp.class);
         job.setMapperClass(MyMapper.class);
         job.setReducerClass(MyReducer.class);
+        //  job.setCombinerClass(MyReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(IntWritable .class);
         FileInputFormat.addInputPath(job, new Path("input"));
         FileOutputFormat.setOutputPath(job, new Path("output"));
-        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        boolean success = job.waitForCompletion(true);
+        System.exit(success ? 0 : 1);
     }
 }
