@@ -2,4 +2,4 @@
 
 rm -rf out.csv
 
-hadoop jar /usr/local/Cellar/hadoop/2.6.0/libexec/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar -fs local -jt local -mapper mapper.py -reducer reducer.py -input payments.csv users.csv -output out.csv -file mapper.py -file reducer.py
+hadoop jar /usr/hdp/2.4.0.0-169/hadoop-mapreduce/hadoop-streaming.jar -fs local -jt local -mapper mapper.py -reducer reducer.py -input payments.csv users.csv -output out.csv -file mapper.py -file reducer.py
