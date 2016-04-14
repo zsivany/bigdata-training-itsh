@@ -1,0 +1,5 @@
+export PYSPARK_SUBMIT_ARGS="--master local[*]"
+export PYSPARK_DRIVER_PYTHON_OPTS='notebook'
+export IPYTHON=1
+
+pyspark
