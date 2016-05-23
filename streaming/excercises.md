@@ -20,7 +20,7 @@ output.
 Hints:
 1. You will need to JOIN. You can't join with `cat | map | sort | reduce` as it only accepts one stream, so you'll need to use the hadoop streaming api in local mode, which will be something like this:
 
-  `hadoop jar /usr/local/Cellar/hadoop/2.6.0/libexec/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar -fs local -jt local -mapper mapper.py -reducer reducer.py -input payments.csv users.csv -output out.csv -file mapper.py -file reducer.py`
+  `hadoop jar /usr/lib/hadoop/hadoop-streaming.jar -mapper mapper.py -reducer reducer.py -input payments.csv users.csv -output out.csv -file mapper.py -file reducer.py`
 
 2. When you use multiple file inputs, you can get the filename of the actual stream in the mapper from `os.environ["map_input_file"]`
 
