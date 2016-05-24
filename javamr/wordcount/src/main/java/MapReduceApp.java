@@ -52,7 +52,7 @@ public class MapReduceApp {
         job.setReducerClass(MyReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job, new Path("input"));
+        FileInputFormat.addInputPath(job, new Path("s3://zoltanctoth/flatland.txt"));
         FileOutputFormat.setOutputPath(job, new Path("output"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
