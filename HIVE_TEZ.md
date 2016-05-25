@@ -72,7 +72,7 @@ CREATE table payments_by_date (
 
 INSERT OVERWRITE TABLE payments_by_date
 PARTITION (date)
-SELECT payment_date, user_id, amount
+SELECT user_id, amount, payment_date
 FROM payments;
 ````
 
