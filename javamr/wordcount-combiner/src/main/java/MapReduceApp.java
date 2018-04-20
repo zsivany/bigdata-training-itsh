@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -8,6 +9,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -61,6 +63,14 @@ public class MapReduceApp {
     }
 
     public static void main(String[] args) throws Exception {
+        String outputDir = "output";
+
+        // Delete output dir if needed
+        File outputF = new File(outputDir);
+        if (outputF.exists()) {
+            FileUtils.forceDelete(outputF); //delete directory
+        }
+
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(MapReduceApp.class);
@@ -70,7 +80,7 @@ public class MapReduceApp {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable .class);
         FileInputFormat.addInputPath(job, new Path("input"));
-        FileOutputFormat.setOutputPath(job, new Path("output"));
+        FileOutputFormat.setOutputPath(job, new Path(outputDir));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
